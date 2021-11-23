@@ -13,6 +13,7 @@ New Features
 * Add support for `property_decorators` config to ignore D401.
 * Add support for Python 3.10 (#554).
 * Replace D10X errors with D419 if docstring exists but is empty (#559)
+* Add `ignore-self-only-init` config (#560).
 
 6.1.1 - May 17th, 2021
 ---------------------------
