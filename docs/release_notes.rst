@@ -14,6 +14,7 @@ New Features
 * Add support for Python 3.10 (#554).
 * Replace D10X errors with D419 if docstring exists but is empty (#559)
 * Add `ignore-self-only-init` config (#560).
+* Change handling of "inaccessible" functions and classes (#561).
 
 6.1.1 - May 17th, 2021
 ---------------------------

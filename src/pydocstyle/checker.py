@@ -14,10 +14,11 @@ from .parser import (
     Class,
     Definition,
     Function,
+    InaccessibleClass,
+    InaccessibleFunction,
     Method,
     Module,
     NestedClass,
-    NestedFunction,
     Package,
     ParseError,
     Parser,
@@ -217,8 +218,9 @@ class ConventionChecker:
                 Module: violations.D100,
                 Class: violations.D101,
                 NestedClass: violations.D106,
+                InaccessibleClass: violations.D121,
                 Method: method_violation,
-                NestedFunction: violations.D103,
+                InaccessibleFunction: violations.D123,
                 Function: (
                     lambda: violations.D103()
                     if not definition.is_overload
