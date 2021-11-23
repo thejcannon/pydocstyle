@@ -187,7 +187,7 @@ class ConventionChecker:
 
     @check_for(Definition, terminal=True)
     def check_docstring_missing(self, definition, docstring):
-        """D10{0,1,2,3}: Public definitions should have docstrings.
+        """D1XX: Definitions should have docstrings.
 
         All modules should normally have docstrings.  [...] all functions and
         classes exported by a module should also have docstrings. Public
@@ -199,36 +199,39 @@ class ConventionChecker:
               with a single underscore.
 
         """
+        def violation(code):
+            code = code if definition.is_public else code + 50
+            return getattr(violations, f"D{code}")()
+
         def method_violation():
             if definition.is_magic:
-                return violations.D105()
+                return 105
             if definition.is_init:
                 if (
                     self.ignore_self_only_init
                     and len(definition.param_names) == 1
                 ):
                     return None
-                return violations.D107()
+                return 107
             if not definition.is_overload:
-                return violations.D102()
+                return 102
             return None
 
-        if not docstring and definition.is_public:
+        if not docstring:
             codes = {
-                Module: violations.D100,
-                Class: violations.D101,
-                NestedClass: violations.D106,
-                InaccessibleClass: violations.D121,
+                Module: lambda: 100,
+                Class: lambda: 101,
+                NestedClass: lambda: 106,
+                InaccessibleClass: lambda: 121,
                 Method: method_violation,
-                InaccessibleFunction: violations.D123,
+                InaccessibleFunction: lambda: 123,
                 Function: (
-                    lambda: violations.D103()
-                    if not definition.is_overload
-                    else None
+                    lambda: 103 if not definition.is_overload else None
                 ),
-                Package: violations.D104,
+                Package: lambda: 104,
             }
-            return codes[type(definition)]()
+            code = codes[type(definition)]()
+            return violation(code) if code is not None else None
 
     @check_for(Definition, terminal=True)
     def check_docstring_empty(self, definition, docstring):

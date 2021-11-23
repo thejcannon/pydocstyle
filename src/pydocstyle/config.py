@@ -11,7 +11,7 @@ from functools import reduce
 from re import compile as re
 
 from .utils import __version__, log
-from .violations import ErrorRegistry, conventions
+from .violations import ErrorRegistry, conventions, default_ignored
 
 try:
     import toml
@@ -184,7 +184,6 @@ class ConfigurationParser:
     )
     BASE_ERROR_SELECTION_OPTIONS = ('ignore', 'select', 'convention')
 
-    DEFAULT_IGNORE = {"D121", "D123"}
     DEFAULT_MATCH_RE = r'(?!test_).*\.py'
     DEFAULT_MATCH_DIR_RE = r'[^\.].*'
     DEFAULT_IGNORE_DECORATORS_RE = ''
@@ -605,7 +604,7 @@ class ConfigurationParser:
             ignored = cls._expand_error_codes(options.ignore)
             checked_codes = codes - ignored
         else:
-            codes -= cls.DEFAULT_IGNORE
+            codes -= default_ignored
             if options.select is not None:
                 checked_codes = cls._expand_error_codes(options.select)
             elif options.convention is not None:
