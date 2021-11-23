@@ -199,6 +199,7 @@ class ConventionChecker:
               with a single underscore.
 
         """
+
         def violation(code):
             code = code if definition.is_public else code + 50
             return getattr(violations, f"D{code}")()
